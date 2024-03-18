@@ -1,0 +1,39 @@
+<div class="chat card mb-0">
+    <div class="d-flex content-min-height content-max-height">
+        <column-panel borderRight="true" [panelWidth]="350" class="p-0" [isMobileActive]="mobilePanelOpen">
+            <div class="chat-panel">
+                <div class="chat-panel-header">
+                    <div class="input-affix">
+                        <i class="prefix-icon feather icon-search"></i>
+                        <input type="text" class="form-control" placeholder="Search" (keyup)="serach($event)">
+                    </div>
+                </div>
+                <perfect-scrollbar class="chat-panel-body">
+                    <div class="chat-list-row"  [ngClass]=" selectedId == c.id  ? 'active': '' "  *ngFor="let c of conversations" (click)="selectChat(c.id,c.users[0].id)" >
+                        
+                        <div >
+                            <div class="avatar avatar-circle avatar-icon avatar-image bg-primary text-white">
+                                {{  c.users[0].firstName[0] | uppercase }}
+                            </div>
+                        </div>
+
+                        
+                        <div class="ms-2 col-8">
+                            <h6 class="mb-0">{{ c.users[0].firstName+' '+c.users[0].lastName | titlecase }}</h6>
+                            <ng-container >
+                                <p   class="chat-list-row-msg mb-0 text-muted">
+                                    {{ getLastMessage(c) }}
+                                </p>
+                            </ng-container>
+                        </div>
+                        <div class="ms-3 chat-list-row-detai">
+                            <span class="text-muted font-size-sm">{{ getTimeElapsedSince(c.updatedAt) }}</span>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+        </column-panel>
+        <conversation [chatId]="selectedId" [userID]="contactID" *ngIf=" selectedId " (messageEvent)="receiveMessage($event)" (openMobilePanel)="onMobilePanelToggleOpen()" ></conversation>
+
+    </div>
+</div>

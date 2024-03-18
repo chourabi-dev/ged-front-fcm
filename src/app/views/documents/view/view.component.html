@@ -1,0 +1,24 @@
+<div class="card" *ngIf="document != null">
+    <div class="card-header">
+        <p class="mb-0">
+            <strong>
+                {{ document.name }}
+            </strong>
+        </p>
+        <p class="text-muted">{{document.createdByName}}</p>
+        <p class="text-muted">{{document.createdDate | date:'medium'}}</p>
+        <p class="text-muted">{{document.categoryName}}</p>
+        
+
+        
+    </div>
+    <div class="card-body">
+        
+        <ngx-doc-viewer
+        [url]="imageUrl"
+        viewer="url"
+        style="width:100%;height:100vh;"
+        ></ngx-doc-viewer>
+
+    </div>
+</div>

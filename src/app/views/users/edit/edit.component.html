@@ -1,0 +1,80 @@
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/users"> {{ 'Back'  | translate }}</button>
+         
+            </div>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" >
+           <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label for="">{{ 'FIRSTNAME' | translate }}</label>
+                        <input type="text" class="form-control" formControlName="firstName">
+                    </div>  
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label for="">{{ 'LASTNAME' | translate }}</label>
+                        <input type="text" class="form-control" formControlName="lastName">
+                    </div>  
+                </div> 
+           </div>
+           <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label for="">{{ 'EMAIL' | translate }}</label>
+                        <input type="text" class="form-control" formControlName="email" [disabled]="true">
+                    </div>  
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label for="">{{ 'PHONE' | translate }}</label>
+                        <input type="tel" class="form-control" formControlName="phoneNumber">
+                    </div>  
+                </div> 
+
+        </div>
+ 
+
+
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <label for="">{{ 'ROLES' | translate }}</label>
+                    <ng-select [multiple]="true"  formControlName="roleIds" >
+                        <ng-option *ngFor="let role of roles" [value]="role.id"  >{{role.name}}</ng-option> 
+                    </ng-select>
+                </div>
+            </div>
+
+            
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success" [disabled]="! form.valid">{{ 'UPDATE' | translate }}</button>
+             </div>
+ 
+            
+             
+
+            
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error | translate }}
+            </div>
+            
+            
+        </form>
+    </div>
+</div>

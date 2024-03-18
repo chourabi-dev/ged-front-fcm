@@ -1,0 +1,100 @@
+
+<div class="card card-body">
+
+    <div class="d-flex justify-content-end">
+        <div>
+            <button class="btn btn-primary btn-sm mb-3" routerLink="/users/new"> {{ 'Add new'  | translate }}</button>
+     
+        </div>
+    </div>
+
+    <div class="text-muted text-center" *ngIf="loading == true">
+        <p>
+            {{ 'Loading...'  | translate }}
+        </p>
+    </div>
+
+
+    <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">{{ 'WAITALERT'  | translate }}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{ 'DELETEMESSAGE'  | translate }}
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-danger" (click)="confirmAndDelete()" > {{ 'CONFIRM'  | translate }}</button>
+        </div>
+      </ng-template>
+
+
+ 
+
+
+     
+
+    <table class="table" *ngIf="loading != true">
+        <thead>
+            <tr>
+                <td class="text-start">Actions</td>
+                <td>{{ 'EMAIL'  | translate }}</td>
+                <td>{{ 'FIRSTNAME'  | translate }}</td> 
+                <td>{{ 'LASTNAME'  | translate }}</td> 
+                <td>{{ 'PHONE'  | translate }}</td> 
+                
+                
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let u of users" >
+                <td>
+
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary btn-sm" aria-controls="dropdown-basic">
+                            <i class="feather icon-more-vertical"></i>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                         
+                          
+                          <li role="menuitem">
+                            <span class="dropdown-item" [routerLink]=" '/users/edit/'+u.id "><i class="feather icon-edit"></i> {{ 'EDIT'  | translate }}</span>
+                          </li>
+
+                          
+
+                          <li role="menuitem">
+                            <span class="dropdown-item"><i class="feather icon-shield"></i> {{ 'PERMESSION'  | translate }}</span>
+                          </li>
+
+                          <li role="menuitem">
+                            <span class="dropdown-item" [routerLink]=" '/users/reset-password/'+u.id "   ><i class="feather icon-lock"></i> {{ 'RESET_PASSWORD'  | translate }}</span>
+                          </li>
+
+                          <li role="menuitem">
+                            <span class="dropdown-item text-danger" (click)="deleteUser(template,u.id)"><i class="feather icon-trash-2 text-danger"></i> {{ 'DELETE'  | translate }}</span>
+                          </li>
+    
+
+                          
+                         
+                          
+                          
+                        </ul>
+                      </div>
+                </td>
+                <td>
+                    <a href="mailto:{{ u.email }}">{{ u.email }}</a>
+                </td>
+                <td>{{ u.firstName }}</td>
+                <td>{{ u.lastName }}</td>
+                <td>
+                    <a href="tel:{{ u.phoneNumber }}">{{ u.phoneNumber }}</a>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>

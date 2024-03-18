@@ -1,0 +1,55 @@
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/roles"> {{ 'Back'  | translate }}</button>
+         
+            </div>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" >
+            <div class="mb-3">
+                <label for="">{{ 'Name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="name">
+            </div>
+            
+
+            <div *ngFor="let p of pagesActionsList">
+                <h3>{{ p.name }}</h3>
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3 mb-3" *ngFor="let a of p.children">
+                        <input type="checkbox"   [value]="a.id" (change)="actionChange(a)" [checked]="checkAction(a)" class="me-3" > <label for="">{{ a.name  }}</label>
+                    </div>
+                </div>
+
+                
+            </div>
+
+
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success" [disabled]="! form.valid">{{ 'UPDATE' | translate }}</button>
+             </div>
+ 
+ 
+            
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error }}
+            </div>
+            
+            
+        </form>
+    </div>
+</div>

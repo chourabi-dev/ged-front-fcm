@@ -1,0 +1,82 @@
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/settings/smtp"> {{ 'Back'  | translate }}</button>
+         
+            </div>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" >
+            
+
+            <div class="row mb-3">
+                <div class="col-sm-4">
+                    <label for="">{{ 'HOST' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="host">
+                </div>
+                <div class="col-sm-4">
+                    <label for="">{{ 'PORT' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="port">
+                </div>
+                <div class="col-sm-4">
+                    <label for="">{{ 'ENCRYPTION' | translate }}</label>
+                    <select   class="form-control" formControlName="encryption">
+                        <option value="">None</option>
+                        <option value="tls">Tls</option>
+                        <option value="ssl">Ssl</option>
+                        <option value="starttls">Starttls</option>
+                        
+                    </select>
+                </div> 
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4">
+                    <label for="">{{ 'USER_NAME' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="userName">
+                </div>
+                <div class="col-sm-4">
+                    <label for="">{{ 'PASSWORD' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="password">
+                </div>
+                <div class="col-sm-4">
+                    <label for="">{{ 'FROM_NAME' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="fromName">
+                </div> 
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4">
+                    <label for="">{{ 'IS_DEFAULT' | translate }}</label>
+                    <switch  formControlName="isDefault"></switch>
+                </div> 
+            </div>
+
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success" [disabled]="! form.valid">{{ 'Add new' | translate }}</button>
+             </div>
+ 
+             
+
+            
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error }}
+            </div>
+            
+            
+        </form>
+    </div>
+</div>

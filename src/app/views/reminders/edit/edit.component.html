@@ -1,0 +1,254 @@
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/reminders"> {{ 'Back'  | translate }}</button>
+         
+            </div>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" >
+            <div class="mb-3">
+                <label for="">{{ 'SUBJECT' | translate }}</label>
+                <input type="text" class="form-control" formControlName="subject">
+            </div>
+            <div class="mb-3">
+                <label for="">{{ 'MESSAGE' | translate }}</label>
+                <input type="text" class="form-control" formControlName="message">
+            </div>
+
+
+            <div class="row mb-3">
+                
+                <div class="col-sm-12 mb-3"> 
+                    <label for="">{{ 'USERS' | translate }}</label>
+
+                    <ng-select [multiple]="true"  formControlName="usersIds"  class="w-100">
+                        <ng-option *ngFor="let user of users" [value]="user.id"  >{{user.firstName}} {{user.lastName}}</ng-option> 
+                        
+                    </ng-select>
+
+                </div>
+
+                <div class="col-sm-6"> 
+                    <checkbox formControlName="REPEATE_REMINDER" single="true">{{ 'REPEATE_REMINDER' | translate }}</checkbox>
+                </div>
+                <div class="col-sm-6"> 
+                    <checkbox formControlName="SEND_MAIL" single="true">{{ 'SEND_MAIL' | translate }}</checkbox>
+                </div>
+                
+                
+            </div>
+
+
+            <div class="row mb-3" *ngIf="form.controls.REPEATE_REMINDER.value == true">
+                <div class="col-sm-4">
+                    <label for="">{{ 'FREQUENCY' | translate }}</label>
+                    <select class="form-control" formControlName="frequency"> 
+                        <option value="">-- --</option>
+                        <option [value]=" f " *ngFor="let f of frequencies">{{ f | frequency }}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-8">
+                    
+                    <div class="daily-bloc" *ngIf="form.controls.frequency.value == '0' ">
+                        
+                        <label for="">{{ 'WEEK_DAYS' | translate }}</label>
+
+                        <div class="">  
+
+                            <ng-select [multiple]="true"  formControlName="multiple_days"  class="w-100">
+                                <ng-option *ngFor="let day of days" [value]=" day.dayOfWeek "  >{{ day.name }}</ng-option> 
+                                
+                            </ng-select>
+                        </div>
+                    </div>
+
+
+
+                    
+
+                    <div class="weekly-bloc" *ngIf="form.controls.frequency.value == 1">
+                        
+                        <label for="">{{ 'WEEK_DAYS' | translate }}</label>
+
+                        <div class="">
+                           
+                            <div class="day me-2 mb-3" *ngFor="let day of days">
+                                <input type="radio" class="form-check-input me-3" formControlName="weekly_day_choice" [value]=" day.dayOfWeek "> <label for="">{{ day.name }}</label>   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monthly-bloc" *ngIf="form.controls.frequency.value == 2">
+                        
+                        
+                    </div>
+                    
+                    <div class="quarterly-bloc" *ngIf="form.controls.frequency.value == 3">
+                        <label for="">{{ 'SELECT_QUARTER_DATE' | translate }}</label>
+
+
+                        <table class="table">
+                            <tr>
+                                <td>Jan - Mar</td> 
+                                <td>
+                                    <select class="form-control" formControlName="first_quarter_month">
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="first_quarter_day" >
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Apr - Jun</td>
+                                <td>
+                                    <select class="form-control" formControlName="second_quarter_month">
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="second_quarter_day" >
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jul - Sept</td>
+                                <td>
+                                    <select class="form-control" formControlName="third_quarter_month">
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="third_quarter_day" >
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Oct - Dec</td>
+                                <td>
+                                    <select class="form-control" formControlName="forth_quarter_month">
+                                        <option value="10">Octobor</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="forth_quarter_day">
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        
+                    </div>
+                    
+                    <div class="half-yearly-bloc" *ngIf="form.controls.frequency.value == 4">
+                        <label for="">{{ 'SELECT_DATE' | translate }}</label>
+                        
+
+                        <table class="table">
+                            <tr>
+                                <td>Jan - Jun</td> 
+                                <td>
+                                    <select class="form-control" formControlName="first_half_month">
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option> 
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="first_half_day" >
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+
+
+                            <tr>
+                                <td>Jul - Dec</td>
+                                <td>
+                                    <select class="form-control" formControlName="second_half_month">
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option> 
+                                        <option value="10">Octobor</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option> 
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" formControlName="second_half_day" >
+                                        <option [value]="d" *ngFor="let d of dayOfMonths">{{ d }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        
+                    </div>
+                    
+
+                    <div class="half-yearly-bloc" *ngIf="form.controls.frequency.value == 5"> 
+                        
+                    </div>
+                     
+                    
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="">{{ 'REMINDER_DATE' | translate }}</label>
+                    <input type="datetime-local" class="form-control" formControlName="REMINDER_DATE">
+                </div>
+
+                <div class="col-sm-6" *ngIf="form.controls.REPEATE_REMINDER.value == true">
+                    <label for="">{{ 'REMINDER_END_DATE' | translate }}</label>
+                    <input type="datetime-local" class="form-control" formControlName="REMINDER_END_DATE">
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+               <button type="submit" class="btn btn-success" [disabled]="! form.valid" >{{ 'UPDATE' | translate }}</button>
+            </div>
+
+            
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error }}
+            </div>
+            
+            
+        </form>
+    </div>
+</div>

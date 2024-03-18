@@ -1,0 +1,114 @@
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{ 'WAITALERT'  | translate }}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        {{ 'DELETEMESSAGE'  | translate }}
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-danger" (click)="confirmAndDelete()" > {{ 'CONFIRM'  | translate }}</button>
+    </div>
+  </ng-template>
+  
+  
+  
+  
+  <div class="card card-body">
+       
+  
+      <div class="text-muted text-center" *ngIf="loading == true">
+          <p>
+              Loading...
+          </p>
+      </div>
+  
+  
+      <div class="mb-3 text-end">
+        <button class="btn btn-success" routerLink="/reminders/add">{{ 'ADD' | translate }}</button>
+      </div>
+  
+  
+  
+  
+      <form [formGroup]="form" (ngSubmit)="relaod()">
+          <div class="row mb-3">
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" placeholder="Search by subject" formControlName="subject">
+                </div>
+                 <div class="col-sm-3">
+                    <input type="text" class="form-control" placeholder="Search by subject" formControlName="message">
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control" formControlName="frequency">
+                        <option value="">{{ 'FREQUENCY' | translate }}</option>
+
+                        <option [value]=" f " *ngFor="let f of frequencies">{{ f | frequency }}</option>
+                    </select>
+                </div> 
+                <div class="col-sm-3">
+                    <button class="btn btn-primary w-100" type="submit">Search</button>
+                </div>
+              
+          </div> 
+      
+      </form>
+  
+      <table class="table" *ngIf="loading != true">
+          <thead>
+              <tr>
+                <th>{{ 'START_DATE' | translate }}</th>
+                <th>{{ 'END_DATE' | translate }}</th>
+                <th>{{ 'SUBJECT' | translate }}</th>
+                <th>{{ 'MESSAGE' | translate }}</th>
+                <th>{{ 'FREQUENCY' | translate }}</th>
+                <th>{{ 'DOCUMENT' | translate }}</th> 
+                <th scope="col">Action</th>
+                 
+              </tr>
+          </thead>
+          <tbody> 
+  
+            <tr *ngFor="let r of reminders">
+                <td>
+                    <span *ngIf="r.startDate != null">{{ r.startDate | date:'medium' }}</span>
+                </td>
+                <td>
+                    <span *ngIf="r.endDate != null">{{ r.endDate | date:'medium' }}</span>
+                </td>
+                <td>
+                    {{ r.subject }}
+                 </td>
+                 <td>
+                    {{ r.message }}
+                 </td>
+                 <td>
+                    {{ r.frequency | frequency }}
+                 </td>
+                 <td>
+                    <span *ngIf="r.documentName != null">{{ r.documentName  }}</span>
+                 </td>
+                 
+                  
+                <td class="text-end">
+                  <div class="d-flex">
+                    <div class="me-2">
+                        <button [routerLink]=" '/reminders/edit/'+r.id "  class="btn btn-secondary btn-sm me-3" >
+                            <i class="feather icon-edit"></i>
+                        </button>
+                    </div>
+
+                   <div>
+                    <button class="btn btn-danger btn-sm" (click)="deleteItem(template,r.id)" >
+                        <i class="feather icon-trash-2"></i>
+                    </button> 
+                   </div>
+                  </div>
+                </td>
+            </tr>
+           
+          </tbody>
+      </table>
+  </div>

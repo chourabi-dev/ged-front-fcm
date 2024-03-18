@@ -1,0 +1,227 @@
+
+<div class="card card-body">
+
+  
+    <div class="text-muted text-center" *ngIf="loading == true">
+        <p>
+            {{ 'Loading...'  | translate }}
+        </p>
+    </div>
+
+
+    <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">{{ 'WAITALERT'  | translate }}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{ 'DELETEMESSAGE'  | translate }}
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-danger" (click)="confirmAndDelete()" > {{ 'CONFIRM'  | translate }}</button>
+        </div>
+      </ng-template>
+
+
+
+
+      <ng-template #userPermessionModal>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">{{ 'ASSIGN_SHARE_WITH_USERS'  | translate }}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           
+            <form [formGroup]="formUser">
+                <label for="">{{ 'USERS' | translate }}</label>
+
+                <ng-select [multiple]="true"  formControlName="userIds" >
+                    <ng-option *ngFor="let user of users" [value]="user.id"  >{{user.firstName}} {{user.lastName}}</ng-option> 
+                    
+                </ng-select>
+
+                <div class="mt-5" *ngIf=" formUser.controls.userIds.value.length != 0 " >
+                    <label for="">
+                        <strong>{{ 'ASSIGN_SHARE_WITH_USERS' | translate }}</strong>
+                    </label> 
+    
+                    <div>
+                        <label for=""> {{ 'SPACIFY_THE_PERIOD' | translate }}</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="datetime-local" class="form-control" formControlName="ASSIGN_SHARE_WITH_USERS_START_DATE">
+                            </div>
+                            <div class="col-6">
+                                <input type="datetime-local" class="form-control" formControlName="ASSIGN_SHARE_WITH_USERS_END_DATE">
+                            </div>
+                            
+                        </div>
+                    </div> 
+    
+    
+                    <div class="mt-4">  
+                        <checkbox formControlName="ASSIGN_SHARE_WITH_USERS_ALLOW_DOWNLOAD" single="true">{{ 'ALLOW_DOWNLOAD' | translate }}</checkbox>
+                    </div>
+                </div>
+
+                
+            </form>
+            
+
+        </div>
+        <div class="modal-footer">
+                <button class="btn btn-success" (click)="addUserPerrsionCall()">{{ 'CONFIRM' | translate }}</button>
+            
+        </div>
+      </ng-template>
+
+
+
+      <ng-template #rolePermessionModal>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">{{ 'ASSIGN_SHARE_WITH_ROLES'  | translate }}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formRole">
+
+                <label for="">{{ 'ROLES' | translate }}</label>
+                <ng-select [multiple]="true"  formControlName="roleIds" >
+                    <ng-option *ngFor="let role of roles" [value]="role.id"  >{{role.name}}</ng-option> 
+                </ng-select>
+
+                <div class="mt-5" *ngIf=" formRole.controls.roleIds.value.length != 0 ">
+                    <label for="">
+                        <strong>{{ 'ASSIGN_SHARE_WITH_ROLES' | translate }}</strong>
+                    </label> 
+    
+                    <div>
+                        <label for=""> {{ 'SPACIFY_THE_PERIOD' | translate }}</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="datetime-local" class="form-control" formControlName="ASSIGN_SHARE_WITH_ROLES_START_DATE">
+                            </div>
+                            <div class="col-6">
+                                <input type="datetime-local" class="form-control" formControlName="ASSIGN_SHARE_WITH_ROLES_END_DATE">
+                            </div>
+                            
+                        </div>
+                    </div> 
+    
+    
+                    <div class="mt-4">  
+                        <checkbox formControlName="ASSIGN_SHARE_WITH_ROLES_ALLOW_DOWNLOAD" single="true">{{ 'ALLOW_DOWNLOAD' | translate }}</checkbox>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" (click)="addRolePerrsionCall()">{{ 'CONFIRM' | translate }}</button>
+            
+        </div>
+      </ng-template>
+
+
+
+ 
+            
+            
+
+
+ 
+
+    
+    <div class="d-flex">
+        <div class="me-3">
+            <button class="btn btn-success btn-sm" (click)="addUserPermession(userPermessionModal)" >
+                 {{ 'ASSIGN_SHARE_WITH_USERS' | translate }}
+            </button> 
+        </div>
+
+        <div class="me-3">
+            <button class="btn btn-success btn-sm" (click)="addRolePermessionModelOpen(rolePermessionModal)" >
+                 {{ 'ASSIGN_SHARE_WITH_ROLES' | translate }}
+            </button> 
+        </div>
+
+
+        
+    </div>
+
+
+    <div class="alert alert-success" *ngIf="success != ''">
+        {{ success | translate }}
+    </div>
+    <div class="alert alert-danger" *ngIf="error != ''">
+        {{ error  | translate}}
+    </div>
+     
+
+    <table class="table mt-5" *ngIf="loading != true">
+        <thead>
+            <tr>
+                					
+                 
+                <td>
+                    {{ 'TYPE' | translate }}
+                </td>
+                <td>
+                    {{ 'ALLOW_DOWNLOAD' | translate }}
+                </td>
+                <td>
+                    {{ 'USER_ROLE_NAME' | translate }}
+                </td>
+                <td>
+                    {{ 'EMAIL' | translate }}
+                </td>
+                <td>
+                    {{ 'START_DATE' | translate }}
+                </td>
+                <td>
+                    {{ 'END_DATE' | translate }}
+                </td>
+                
+                <td class="text-end">Actions</td>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let p of permessions">
+                 
+                <td>
+                    {{ p.type }}
+                </td>
+                <td>
+                    {{ p.isAllowDownload == 1 ? 'YES': 'NO' }}
+                </td>
+                <td>
+                    {{ p.role != null ? p.role.name : (p.user.firstName + ' '+p.user.lastName) }}
+                </td>
+                <td>
+                    {{ p.user != null ? p.user.email : '--' }}
+                </td>
+                <td>
+                    
+                    <span *ngIf="p.startDate != '0000-00-00 00:00:00' ">{{  p.startDate | date:'medium' }}</span>
+                </td>
+                <td> 
+                    <span *ngIf="p.endDate != '0000-00-00 00:00:00' ">{{  p.endDate | date:'medium' }}</span>
+                </td>
+                
+                <td class="text-end">
+                    
+                    <button class="btn btn-danger btn-sm" (click)="deleteCategory(template,p.id)" >
+                        <i class="feather icon-trash-2"></i>
+                    </button> 
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>

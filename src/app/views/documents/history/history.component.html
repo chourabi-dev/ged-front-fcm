@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-body">
+        
+
+        <div *ngFor="let item of history">
+          <div class="d-flex justify-content-between">
+
+            <div>
+                <p class="mb-3">
+                    <strong>
+                        {{ 'AUTHOR' | translate }} {{ item.createdByUser }}
+                    </strong>
+                </p>
+                <p class="text-muted">
+                    {{ item.modifiedDate | date:'medium' }}
+                </p>
+            </div>
+
+
+            <div>
+                <span class="badge bg-success text-white" *ngIf="item.isCurrentVersion == true"> {{ 'CURRENT_VERSION' | translate }}</span>
+
+                <div class="d-flex" *ngIf="item.isCurrentVersion == null">
+                    <div class="mx-1">
+                        <button class="btn btn-sm btn-outline-primary" [routerLink]=" '/documents/view/'+item.id ">
+                            <i class="feather icon-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mx-1">
+                        <button class="btn btn-sm btn-outline-primary" (click)="download(item.id)">
+                            <i class="feather icon-download-cloud"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mx-1">
+                        <button class="btn btn-sm btn-outline-primary" (click)="restore(item.id)">
+                            <i class="feather icon-clock"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+            
+
+
+          </div>
+        </div>
+
+    </div>
+</div>

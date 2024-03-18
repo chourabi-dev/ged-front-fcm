@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/documents"> {{ 'Back'  | translate }}</button> 
+            </div>
+        </div>
+
+
+
+        
+
+        <form [formGroup]="form"  >
+            
+            
+            <div class="mb-3">
+                <label for="">{{ 'FILE' | translate }}</label>
+                <input type="file" class="form-control" #file formControlName="file" (change)="upload(file.files)">
+            </div>
+
+            <div class="mb-3">
+               <button type="button" (click)="save()" class="btn btn-success" [disabled]="! form.valid">{{ 'ADD' | translate }}</button>
+            </div>
+
+        </form>
+ 
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success | translate }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error }}
+            </div>
+            
+
+    </div>
+</div>

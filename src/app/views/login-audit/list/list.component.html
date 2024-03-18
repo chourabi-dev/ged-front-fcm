@@ -1,0 +1,82 @@
+<div class="card card-body">
+     
+
+    <div class="text-muted text-center" *ngIf="loading == true">
+        <p>
+            Loading...
+        </p>
+    </div>
+
+
+
+
+    <form [formGroup]="form" (ngSubmit)="relaod()">
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <input type="text" class="form-control" placeholder="Search by name" formControlName="name">
+            </div>
+ 
+            <div class="col-sm-2">
+                <button class="btn btn-primary w-100" type="submit">Search</button>
+            </div>
+            
+        </div> 
+    
+    </form>
+
+    <table class="table" *ngIf="loading != true">
+        <thead>
+            <tr>
+                <th>
+                    {{ 'DATETIME' | translate }}
+                </th>
+                <th>
+                    {{ 'USERNAME' | translate }}
+                </th>
+                <th>
+                    {{ 'REMOETIP' | translate }}
+                </th> 
+                <th>
+                    {{ 'STATUS' | translate }}
+                </th>
+                <th>
+                    {{ 'LATITUDE' | translate }}
+                </th>
+                <th>
+                    {{ 'LONGITUDE' | translate }}
+                </th>
+                
+                
+                
+                
+            </tr>
+        </thead>
+        <tbody> 
+
+            <tr *ngFor="let audit of loginAudit" > 
+                <td>
+                    {{ audit.loginTime | date:'medium' }}
+                </td>
+                <td>
+                    {{ audit.userName }}
+                </td>
+                <td>
+                    {{ audit.remoteIP }}
+                </td>
+                <td>
+                    <span class="badge text-white" [ngClass]="audit.status == 'Success' ? 'bg-success':'bg-danger' "  >{{ audit.status }}</span>
+                </td>
+                
+                <td>
+                    {{ audit.latitude }}
+                </td>
+                <td>
+                    {{ audit.longitude }}
+                </td>
+                
+                
+            </tr>
+ 
+        </tbody>
+    </table>
+</div>

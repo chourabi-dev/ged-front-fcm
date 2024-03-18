@@ -1,0 +1,24 @@
+<dropdown dropdownClass="header-nav-item-select nav-profile" (click)="navProfile.toggle($event)">
+    <div class="toggle-wrapper d-flex align-items-center">
+        <!--<avatar [size]="35" src="/assets/images/avatars/thumb-1.jpg"></avatar>-->
+        <span class="fw-bold mx-1">{{ user.firstName }} {{ user.lastName }}</span>
+        <i class="feather icon-chevron-down"></i>
+    </div>
+    <dropdown-menu #navProfile alignment="right">
+        <div class="nav-profile-header">
+            <div class="d-flex align-items-center">
+                <!--<avatar src="/assets/images/avatars/thumb-1.jpg"></avatar>-->
+                <div class="d-flex flex-column ms-1">
+                    <span class="fw-bold text-dark">{{ user.firstName }} {{ user.lastName }}  </span>
+                    <span class="font-size-sm">{{ user.email }}</span>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:void(0)" dropdownItem (click)="logout()" >
+            <div class="d-flex align-items-center">
+                <i class="font-size-lg ms-2 feather icon-power"></i>
+                <span>Sign Out</span>
+            </div>
+        </a> 
+    </dropdown-menu>
+</dropdown>

@@ -1,0 +1,40 @@
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end">
+            <div>
+                <button class="btn btn-primary btn-sm mb-3" routerLink="/categories"> {{ 'Back'  | translate }}</button> 
+            </div>
+        </div>
+
+
+        <form [formGroup]="form" (ngSubmit)="save()" >
+            <div class="mb-3">
+                <label for="">{{ 'Name' | translate }}</label>
+                <input type="text" class="form-control" formControlName="name">
+            </div>
+            <div class="mb-3">
+                <label for="">{{ 'Description' | translate }}</label>
+                <input type="text" class="form-control" formControlName="description">
+            </div>
+            <div class="mb-3">
+               <button type="submit" class="btn btn-success" [disabled]="! form.valid">{{ 'Update' | translate }}</button>
+            </div>
+            
+
+            <div class="alert alert-info" *ngIf="loading == true ">
+                {{ 'Loading...' | translate }}
+            </div>
+
+            <div class="alert alert-success" *ngIf="success != ''">
+                {{ success }}
+            </div>
+            <div class="alert alert-danger" *ngIf="error != ''">
+                {{ error }}
+            </div>
+            
+            
+        </form>
+    </div>
+</div>

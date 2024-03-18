@@ -1,0 +1,76 @@
+<!--
+
+    
+: 
+"2024-02-14T14:53:51.000000Z"
+documentId
+: 
+"0e014747-0af2-4e0f-9aad-881415e5f9d5"
+documentName
+: 
+"Screenshot from 2024-01-23 20-29-00.png"
+id
+: 
+"1"
+
+: 
+false
+ 
+: 
+"2024-02-14T14:57:00.000000Z"
+userId
+: 
+"4d2689d8-6f72-4aa6-911d-2414c1a751af"
+-->
+
+
+<dropdown dropdownClass="header-nav-item-select nav-notification" (click)="navNotification.toggle($event)">
+    <div class="toggle-wrapper">
+        <i class="header-nav-item-select nav-icon feather icon-bell"></i>
+    </div>
+    <dropdown-menu #navNotification alignment="right">
+        <div class="nav-notification-header">
+            <h5 class="mb-0">Notifications</h5>
+            <a href="#" class="font-size-sm">Mark All as Read</a>
+        </div>
+        <perfect-scrollbar class="nav-notification-body">
+            <div class="nav-notification-item" *ngFor="let item of notificationList">
+                <div>
+                    <ng-container 
+                        [ngTemplateOutlet]="iconTpl"
+                        [ngTemplateOutletContext]="{img: item.avatar, icon: item.isRead == false ? 3 : 0}">
+                    </ng-container>
+                </div>
+                <div class="ms-2">
+
+
+
+                    <span>
+                        <span class="fw-bolder text-dark">{{item.documentName}} </span>
+                        <span>{{item.message}}</span>
+                    </span>
+                    <div class="font-size-sm fw-bold mt-1">
+                        <i class="feather icon-clock"></i>
+                        <span class="ms-1">{{getTimeDistance(item.createdDate)}}</span>
+                    </div>
+                </div>
+            </div>
+        </perfect-scrollbar>
+        <div class="nav-notification-footer">
+            <a href="#" class="font-size-sm">View All</a>
+        </div>
+    </dropdown-menu>
+</dropdown>
+ 
+  
+<ng-template #iconTpl let-icon="icon">
+    <avatar [size]="40" [class]="'font-size-lg'+ ' ' + notificationIconMap[icon] + ' ' + notificationColorMap[icon] "></avatar>
+</ng-template>
+
+<!-- <ng-template #odd_tpl let-number='number'>
+    <li>Odd: {{number}}</li>  
+  </ng-template>
+  
+  <ng-template #even_tpl let-number='number'>
+    <li>Even: {{number}}</li>  
+  </ng-template> -->

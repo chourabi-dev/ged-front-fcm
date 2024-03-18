@@ -1,0 +1,99 @@
+<div class="conversation-header">
+    <div class="d-flex align-items-center">
+        <div class="d-block d-lg-none cursor-pointer me-2 font-size-lg" (click)="onMobilePanelOpen()">
+            <i class="feather icon-menu"></i>
+        </div>
+        <div class="mt-3">
+            <h5 class="mb-0"><span  >{{ contactNAME | titlecase }}</span></h5>
+            <p class="text-muted">1m</p>
+        </div>
+    </div>
+</div>
+<perfect-scrollbar class="conversation-body" #chatPS>
+    <div class="p-4"  >
+
+
+        <div *ngFor="let m of messages ">
+              
+        <div class="msg msg-recipient" *ngIf="m.sender.id != me">
+            <div class="ms-2">
+                <div class="avatar avatar-circle avatar-icon avatar-image bg-primary text-white">
+                    {{ m.sender.firstName[0] | uppercase }}
+                </div>
+            </div>
+            <div class="bubble">
+                <div class="bubble-wrapper">
+                    <span>{{ m.content}}</span>
+
+                    <div  *ngIf="m.uploads != null">
+                        <div *ngIf="! checkURLifISimage(m.uploads)">
+                            <a [href]=" serverIP+'/'+m.uploads " download target="_blank">{{ 'DOWNLOAD' | translate }}</a>
+                        </div>
+                        <div *ngIf="checkURLifISimage(m.uploads)">
+                            <img [src]=" serverIP+'/'+m.uploads " class="w-100"  [id]="'image-'+m.id">
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+             
+        </div>
+ 
+
+
+        <div class="msg msg-sent" *ngIf="m.sender.id == me">
+            <div class="bubble no-avatar">
+                <div class="bubble-wrapper">
+                    <span>{{ m.content }}</span>
+                    <div  *ngIf="m.uploads != null">
+                        <div *ngIf="! checkURLifISimage(m.uploads)">
+                            <a [href]=" serverIP+'/'+m.uploads " download target="_blank">{{ 'DOWNLOAD' | translate }}</a>
+                        </div>
+                        <div *ngIf="checkURLifISimage(m.uploads)">
+                            <img [src]=" serverIP+'/'+m.uploads " class="w-100"  [id]="'image-'+m.id">
+                        </div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+
+        </div>
+       
+      
+
+    </div>
+</perfect-scrollbar>
+<div class="conversation-footer">
+    <input 
+        id="message"
+        type="text" 
+        class="form-control ms-2" 
+        placeholder="Enter your message here" 
+        [(ngModel)]="message" 
+        (keydown.enter)="sendMessage();$event.preventDefault()"
+
+        emoji="true"
+    >
+
+
+    <input type="file" class="form-control" id="file" #file   (change)="upload(file.files)" style="display: none;">
+     
+    <div class="conversation-footer-icon d-flex">
+        <a class="mx-2" href="javascript:void(0)" (click)="chooseFile()">
+            <i class="las la-paperclip"></i>
+        </a>
+        <!--<a class="mx-2" href="javascript:void(0)" (click)="emoji()">
+            <i class="las la-smile"></i>
+        </a>-->
+    </div>
+    <button class="btn btn-primary ms-2" (click)="sendMessage()">
+        <span>{{'SEND' | translate}}</span>
+        <i class="feather icon-send"></i>
+    </button>
+</div>

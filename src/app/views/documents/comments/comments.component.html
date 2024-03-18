@@ -1,0 +1,76 @@
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{ 'WAITALERT'  | translate }}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        {{ 'DELETEMESSAGE'  | translate }}
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-danger" (click)="confirmAndDelete()" > {{ 'CONFIRM'  | translate }}</button>
+    </div>
+  </ng-template>
+  
+  
+  
+  
+  <div class="card card-body">
+       
+  
+      <div class="text-muted text-center" *ngIf="loading == true">
+          <p>
+              Loading...
+          </p>
+      </div>
+  
+  
+      <div class="mb-3 text-end">
+        <button class="btn btn-success" routerLink="/documents">{{ 'BACK' | translate }}</button>
+      </div>
+
+
+
+      <div *ngFor="let c of comments">
+       
+       <div class="comment d-flex justify-content-between">
+       
+        <div>
+            <p class="text-muted mb-0">
+                {{ c.comment }}
+            </p>
+            <p class="text-primary">
+                {{ c.createdByName }}
+            </p>
+            <p class="text-muted">
+                {{ c.createdDate | date:'medium' }}
+            </p>
+        </div>
+    
+
+        <div>
+            <button class="btn " (click)="deleteComment(template,c.id)">
+                <span class="dropdown-item text-danger"><i class="feather icon-trash-2 text-danger"></i> Delete</span>
+            </button>
+        </div>
+       </div>
+
+        
+
+      </div>
+
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="mb-3">
+            <textarea formControlName="comment" class="form-control" placeholder="..."></textarea>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-success" [disabled]=" ! form.valid ">{{ 'ADD' | translate }}</button>
+        </div>
+      </form>
+  
+   
+      
+  </div>

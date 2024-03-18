@@ -1,0 +1,80 @@
+
+<div class="card card-body">
+
+    <div class="d-flex justify-content-end">
+        <div>
+            <button class="btn btn-primary btn-sm mb-3" routerLink="/users/new"> {{ 'Add new'  | translate }}</button>
+     
+        </div>
+    </div>
+
+    <div class="text-muted text-center" *ngIf="loading == true">
+        <p>
+            {{ 'Loading...'  | translate }}
+        </p>
+    </div>
+
+
+    <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">{{ 'CHAT'  | translate }}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+            <div class="modal-body">
+                <form [formGroup]="form" >
+                    <textarea class="form-control" formControlName="message"></textarea> 
+                </form>
+            </div>
+            <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" (click)="startConverstaion()" [disabled]="! form.valid" > {{ 'SEND'  | translate }}</button>
+            </div>
+        
+        
+      </ng-template>
+
+
+ 
+
+
+     
+
+    <table class="table" *ngIf="loading != true">
+        <thead>
+            <tr>
+                <td class="text-start">Actions</td>
+                <td>{{ 'EMAIL'  | translate }}</td>
+                <td>{{ 'FIRSTNAME'  | translate }}</td> 
+                <td>{{ 'LASTNAME'  | translate }}</td> 
+                <td>{{ 'PHONE'  | translate }}</td> 
+                
+                
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let u of users" >
+                <td>
+
+                    <div class="btn-group"  >
+                        <button id="button-basic" class="btn btn-secondary btn-sm" (click)="sendMesage(template,u.id)" >
+                            <i class="feather icon-send "></i>
+                            
+                        </button>
+                        
+                      </div>
+                </td>
+                <td>
+                    <a href="mailto:{{ u.email }}">{{ u.email }}</a>
+                </td>
+                <td>{{ u.firstName }}</td>
+                <td>{{ u.lastName }}</td>
+                <td>
+                    <a href="tel:{{ u.phoneNumber }}">{{ u.phoneNumber }}</a>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
