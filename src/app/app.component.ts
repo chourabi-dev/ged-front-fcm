@@ -8,6 +8,7 @@ import { fr_FR } from './i18n/fr/index'
 
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ApiService } from './api.service';
 
 const storageKey = 'lang'
 
@@ -20,14 +21,25 @@ export class AppComponent implements OnInit, OnDestroy {
     private langChangeSubscription!: Subscription;
     currentLang: string;
 
-    constructor(private translateService: TranslateService,private messaging:AngularFireMessaging, private db:AngularFirestore) {
+    constructor(private api:ApiService, private translateService: TranslateService,private messaging:AngularFireMessaging, private db:AngularFirestore) {
         translateService.setTranslation('en_US', en_US);
         translateService.setTranslation('fr_FR', fr_FR);
     }
 
 
     getToken(){
-        
+        this.messaging.getToken.subscribe((res)=>{
+            console.log(res);
+
+            this.api.updateFCM(res).toPromise().then((res)=>{
+                console.log(res);
+                
+            })
+            
+        },(err)=>{
+            console.log(err);
+            
+        })
     }
 
     ngOnInit() {

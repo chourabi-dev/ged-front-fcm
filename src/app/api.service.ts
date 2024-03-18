@@ -925,5 +925,18 @@ export class ApiService {
   }
 
 
+  updateFCM(fcm){
+    const URL =environment.apiUrl+'/api/user/fcmtoken';
+
+    const headers= new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Authorization', 'Bearer '+localStorage.getItem('token'));
+
+      return this.http.post(URL,{ "token_fcm": fcm },{
+        headers: headers
+      }) 
+  }
+
+
   
 }
