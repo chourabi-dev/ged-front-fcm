@@ -11,7 +11,7 @@ import { AuthGuard } from './auth.guard';
 const appRoutes: Routes = [
  
 
-    { path:'', redirectTo:'/', pathMatch:'full' },
+    { path:'', redirectTo:'/dashboard', pathMatch:'full' },
     { 
         path: '', 
         component: AppLayoutComponent,

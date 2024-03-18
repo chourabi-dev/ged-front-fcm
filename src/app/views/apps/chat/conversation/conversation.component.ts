@@ -4,13 +4,15 @@ import { Chat } from '../chat.interface'
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ApiService } from '@app/api.service';
 import { environment } from 'src/environments/environment';
+import { AngularFireMessaging } from '@angular/fire/messaging';
 
 @Component({
     selector: 'conversation',
     templateUrl: './conversation.component.html',
     host: {
         '[class.conversation]': 'true'
-    }
+    },
+    styleUrls:['./style.css']
 })
 export class ConversationComponent implements OnInit {
 
@@ -22,6 +24,8 @@ export class ConversationComponent implements OnInit {
 
 
     contactNAME:string='...';
+    lastTimeConnected='';
+    activeNow:boolean = false;
     
 
     @Input() userID:any;
@@ -51,7 +55,74 @@ export class ConversationComponent implements OnInit {
 
     @Output() messageEvent = new EventEmitter<string>();
 
-    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef, private api:ApiService) { }
+    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef, private api:ApiService, private msg:AngularFireMessaging) { }
+
+
+
+    watchMessages(){ 
+
+
+        this.msg.messages.subscribe((res)=>{
+            console.log(res);
+            
+            console.log("Getting messages...");
+            this.messageEvent.emit('REFRESH');
+            this.fetchChatDetail(this._id);
+        })
+
+
+        
+    }
+ 
+
+
+
+
+
+    formatTime(milliseconds) {
+        if (milliseconds < 1000) {
+            this.activeNow = true;
+            
+            return "Active now";
+            
+        } else if (milliseconds < 60000) {
+            this.activeNow = true;
+            
+            return Math.floor(milliseconds / 1000) + "sec";
+        } else if (milliseconds < 3600000) {
+            this.activeNow = false;
+            
+            return Math.floor(milliseconds / 60000) + "m";
+        } else if (milliseconds < 86400000) {
+            this.activeNow = false;
+            return Math.floor(milliseconds / 3600000) + "h";
+        } else {
+            this.activeNow = false;
+            return Math.floor(milliseconds / 86400000) + "day";
+        }
+    }
+
+
+
+    refreshUserStatus(){
+        setInterval(()=>{
+            this.api.getUserById(this.userID).toPromise().then((res:any)=>{ 
+    
+               if (res.lastConnection != null) {
+                    const lastConnection = new Date(res.lastConnection).getTime() 
+                    const today = new Date().getTime(); 
+                    const diffrence = today - lastConnection; 
+                    this.lastTimeConnected = this.formatTime(diffrence);
+
+
+               }else{
+                    this.lastTimeConnected='';
+               } 
+                this.cdr.detectChanges();
+            })
+        },5000)
+    }
+  
 
     ngOnInit(): void {
         console.log(this._id);
@@ -64,6 +135,27 @@ export class ConversationComponent implements OnInit {
 
  
         this.api.getUserById(this.userID).toPromise().then((res:any)=>{
+            
+            console.log(res);
+            
+
+
+           if (res.lastConnection != null) {
+                const lastConnection = new Date(res.lastConnection).getTime()
+
+                const today = new Date().getTime();
+
+                const diffrence = today - lastConnection;
+
+
+                this.lastTimeConnected = this.formatTime(diffrence);
+           }else{
+                this.lastTimeConnected='';
+           }
+
+
+
+            this.refreshUserStatus();
             
             this.contactNAME = res.firstName+' '+res.lastName;
             this.cdr.detectChanges();
@@ -83,6 +175,9 @@ export class ConversationComponent implements OnInit {
             this.messages = res. messages;
             
             this.cdr.detectChanges();
+
+
+            this.watchMessages();
             
             setTimeout(() => {
                 this.scrollToBottom();

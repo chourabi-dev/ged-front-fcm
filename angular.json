@@ -37,6 +37,7 @@
                 "src/styles.scss" 
               ],
               "scripts": [
+                "src/firebase-messaging-sw.js",
                 "src/assets/js/prettify.min.js",
                 "node_modules/apexcharts/dist/apexcharts.min.js"
               ],
@@ -81,6 +82,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "ssl": true,
             "browserTarget": "espire:build"
           },
           "configurations": {

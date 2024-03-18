@@ -27,23 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
 
-    getToken(){
-        this.messaging.getToken.subscribe((res)=>{
-            console.log(res);
 
-            this.api.updateFCM(res).toPromise().then((res)=>{
-                console.log(res);
-                
-            })
-            
-        },(err)=>{
-            console.log(err);
-            
-        })
-    }
 
-    ngOnInit() {
-        this.getToken();
+    ngOnInit() { 
 
         this.app$.subscribe(app => {
             this.currentLang = localStorage.getItem(storageKey) || app.lang || this.translateService.getBrowserCultureLang();

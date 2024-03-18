@@ -9,7 +9,7 @@ export const environment = {
     measurementId: "G-1RB3Z2N4K0"
   },
   production: true,
-  apiUrl: 'http://localhost:8000',
+  apiUrl: 'https://documentmanagment.swc-prod.com.tn',
   tokenExpiredTimeInMin: 50,
   allowExtesions: [
     {

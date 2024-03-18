@@ -5,7 +5,7 @@
         </div>
         <div class="mt-3">
             <h5 class="mb-0"><span  >{{ contactNAME | titlecase }}</span></h5>
-            <p class="text-muted">1m</p>
+            <p class="text-muted"> <span *ngIf="activeNow" class="activeNow"></span> <span *ngIf="! activeNow" class="not-activeNow"></span> {{lastTimeConnected}}</p>
         </div>
     </div>
 </div>
@@ -97,3 +97,35 @@
         <i class="feather icon-send"></i>
     </button>
 </div>
+
+
+
+<script>
+    // Give the service worker access to Firebase Messaging.
+// Note that you can only use Firebase Messaging here. Other Firebase libraries
+// are not available in the service worker.
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+// Initialize the Firebase app in the service worker by passing in
+// your app's Firebase config object.
+// https://firebase.google.com/docs/web/setup#config-object
+firebase.initializeApp({
+    apiKey: "AIzaSyCAM05G39CqR4pS_TbHX6BE27n21FN571U",
+    authDomain: "document-management-a566f.firebaseapp.com",
+    projectId: "document-management-a566f",
+    storageBucket: "document-management-a566f.appspot.com",
+    messagingSenderId: "290103859511",
+    appId: "1:290103859511:web:572b23534567d8705d62b2",
+    measurementId: "G-1RB3Z2N4K0"
+});
+
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
+const messaging = firebase.messaging();
+
+
+messaging.onMessage((msg)=>{
+    console.log(msg);
+})
+</script>

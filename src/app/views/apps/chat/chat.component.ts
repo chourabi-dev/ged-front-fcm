@@ -4,6 +4,7 @@ import { Chat } from './chat.interface'
 import { WildcardSearch } from '@app/shared/utils/WildcardSearch';
 import { NumberFormatStyle } from '@angular/common';
 import { ApiService } from '@app/api.service';
+import { AngularFireMessaging } from '@angular/fire/messaging';
 
 @Component({
     selector: 'chat',
@@ -26,12 +27,19 @@ export class ChatComponent implements OnInit {
     contactID;
 
     
-    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef,private api:ApiService) {
+    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef,private api:ApiService,private messaging:AngularFireMessaging) {
       
     }
 
     ngOnInit(): void { 
         this.getConverstations();
+        this.watchMessages();
+    }
+
+
+
+    watchMessages(){
+         
     }
 
 

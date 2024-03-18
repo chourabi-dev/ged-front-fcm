@@ -838,9 +838,9 @@ const others: NavMenu[] = [
 
 export const navConfiguration: NavMenu[] = [
     ...dashboard,
-    ...apps,
+    /*...apps,
     ...components,
     ...charts,
     ...pages,
-    ...others
+    ...others*/
 ]
