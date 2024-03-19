@@ -35,5 +35,9 @@
         </column-panel>
         <conversation [chatId]="selectedId" [userID]="contactID" *ngIf=" selectedId " (messageEvent)="receiveMessage($event)" (openMobilePanel)="onMobilePanelToggleOpen()" ></conversation>
 
+
+        <button class="new-chat-button" *ngIf=" ! selectedId " routerLink="/team">
+            <i class="icon-plus feather"></i>
+        </button>
     </div>
 </div>

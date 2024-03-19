@@ -5,10 +5,12 @@ import { WildcardSearch } from '@app/shared/utils/WildcardSearch';
 import { NumberFormatStyle } from '@angular/common';
 import { ApiService } from '@app/api.service';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { defaultLanguge } from '@app/configs/i18n.config';
 
 @Component({
     selector: 'chat',
-    templateUrl: './chat.component.html'
+    templateUrl: './chat.component.html',
+    styleUrls:['./style.css']
 })
 export class ChatComponent implements OnInit {
 
@@ -16,6 +18,10 @@ export class ChatComponent implements OnInit {
     chatList: Chat[]
     selectedId: string | NumberFormatStyle
     mobilePanelOpen: boolean = true;
+
+
+
+    lang;
 
 
 
@@ -28,6 +34,7 @@ export class ChatComponent implements OnInit {
 
     
     constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef,private api:ApiService,private messaging:AngularFireMessaging) {
+      
       
     }
 
