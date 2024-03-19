@@ -21,7 +21,8 @@ import { ChatService } from './chat.service';
         ColumnPanelModule,
         AvatarModule,
         PerfectScrollbarModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        
     ],
     exports: [],
     providers: [

@@ -19,9 +19,9 @@
 
                         
                         <div class="ms-2 col-8">
-                            <h6 class="mb-0">{{ c.users[0].firstName+' '+c.users[0].lastName | titlecase }}</h6>
+                            <h6 class="mb-0 " [ngClass]="containsUnreadMessages(c) ? 'text-bold' : ''">{{ c.users[0].firstName+' '+c.users[0].lastName | titlecase }}</h6>
                             <ng-container >
-                                <p   class="chat-list-row-msg mb-0 text-muted">
+                                <p   class="chat-list-row-msg mb-0 text-muted" [ngClass]="containsUnreadMessages(c) ? 'text-bold' : ''">
                                     {{ getLastMessage(c) }}
                                 </p>
                             </ng-container>
@@ -36,8 +36,51 @@
         <conversation [chatId]="selectedId" [userID]="contactID" *ngIf=" selectedId " (messageEvent)="receiveMessage($event)" (openMobilePanel)="onMobilePanelToggleOpen()" ></conversation>
 
 
-        <button class="new-chat-button" *ngIf=" ! selectedId " routerLink="/team">
+        <button class="new-chat-button" (click)="openNewChatSelection(template)"  *ngIf=" ! selectedId "  >
             <i class="icon-plus feather"></i>
         </button>
+
+
+
+        <ng-template #template>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">{{ 'NEWCHAT'  | translate }}</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                        <div class="chat-list-row d-flex mb-3"  style="cursor: pointer;"  *ngFor="let u of users" (click)="openChatWith(u.id)" >
+                            
+                            <div class="me-3">
+                                <div class="avatar avatar-circle avatar-icon avatar-image bg-primary text-white">
+                                    {{  u.firstName[0] | uppercase }}
+                                </div>
+                            </div>
+        
+                            
+                            <div class="ms-2 col-8">
+                                <h6 class="mb-0">{{ u.firstName+' '+u.lastName | titlecase }}</h6>
+                                <ng-container >
+                                    {{  u.email  }}
+                                </ng-container>
+                            </div> 
+                        </div> 
+                
+
+            </div>
+            
+          </ng-template>
+
+
+
+
+
+
+  
+    
+
+          
+
     </div>
 </div>

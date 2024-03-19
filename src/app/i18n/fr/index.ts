@@ -1,7 +1,11 @@
 import { nav } from './section/nav'
 
 
-export const fr_FR = {
+export const fr_FR = { 
+    'CONNECTION_STATUS':'Actif il y a ',
+    'CONNECTION_STATUS_NOW':'Online',
+    'SELECTED_FILE':'Un fichier sélectionné',
+    'NEWCHAT':'Nouvelle discussion',
     'EDIT':'Modifier',
     'RESET_PASSWORD':'Réinitialiser le mot de passe',
     'PERMESSION':'Autorisation',
@@ -74,5 +78,6 @@ export const fr_FR = {
     'DELETEMESSAGE':"Êtes-vous sûr de bien vouloir supprimer cet élément ?",
     'WAITALERT':'Confirmation',
     'CONFIRM':'Confirmer',
+    'UPLOADING':'Chargement en cours...',
     ...nav
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { ChatService } from './chat.service'
 import { Chat } from './chat.interface'
 import { WildcardSearch } from '@app/shared/utils/WildcardSearch';
@@ -6,6 +6,7 @@ import { NumberFormatStyle } from '@angular/common';
 import { ApiService } from '@app/api.service';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { defaultLanguge } from '@app/configs/i18n.config';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'chat',
@@ -32,8 +33,20 @@ export class ChatComponent implements OnInit {
 
     contactID;
 
+
+
+    loading:boolean = false;
+    categories:any[] = [];
+    modalRef: BsModalRef;
+
     
-    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef,private api:ApiService,private messaging:AngularFireMessaging) {
+    users:any[] = [];
+
+
+
+
+    
+    constructor(private chatSvc: ChatService, private cdr: ChangeDetectorRef,private api:ApiService,private messaging:AngularFireMessaging,private modalService: BsModalService) {
       
       
     }
@@ -41,8 +54,14 @@ export class ChatComponent implements OnInit {
     ngOnInit(): void { 
         this.getConverstations();
         this.watchMessages();
+        this.getUsers();
     }
 
+    getUsers(){
+        this.api.getListOfUsers().toPromise().then((res:any)=>{
+            this.users = res;
+        })
+    }
 
 
     watchMessages(){
@@ -64,6 +83,18 @@ export class ChatComponent implements OnInit {
         })
     }
 
+
+    containsUnreadMessages(c){
+        let contains = false;
+
+        c.messages.map( (m)=>{
+            if(m.isRead == 0){
+                contains = true;
+            }
+        } )
+
+        return contains;
+    }
 
 
     fetch(id = '1') {
@@ -164,5 +195,24 @@ export class ChatComponent implements OnInit {
             return `${elapsedSeconds}s`;
         }
     }
-    
+
+ 
+   
+
+ 
+  
+   
+    openNewChatSelection(template: TemplateRef<any>) {
+      this.modalRef = this.modalService.show(template);
+    }
+
+
+    openChatWith(id){
+
+
+        this.selectChat('NEW',id);
+
+        this.modalRef.hide();
+    }
+  
 }

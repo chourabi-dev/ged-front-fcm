@@ -23,7 +23,7 @@ export class ConversationComponent implements OnInit {
     private _id: string;
 
 
-    contactNAME:string='...';
+    contactNAME:string='';
     lastTimeConnected='';
     activeNow:boolean = false;
     
@@ -63,9 +63,9 @@ export class ConversationComponent implements OnInit {
 
 
         this.msg.messages.subscribe((res)=>{
-            console.log(res);
+            // console.log(res);
             
-            console.log("Getting messages...");
+            // console.log("Getting messages...");
             this.messageEvent.emit('REFRESH');
             this.fetchChatDetail(this._id);
         })
@@ -83,12 +83,14 @@ export class ConversationComponent implements OnInit {
         if (milliseconds < 1000) {
             this.activeNow = true;
             
-            return "Active now";
+            return "";
             
         } else if (milliseconds < 60000) {
             this.activeNow = true;
             
-            return Math.floor(milliseconds / 1000) + "sec";
+            return "";
+
+
         } else if (milliseconds < 3600000) {
             this.activeNow = false;
             
@@ -120,23 +122,23 @@ export class ConversationComponent implements OnInit {
                } 
                 this.cdr.detectChanges();
             })
-        },5000)
+        },10000)
     }
   
 
     ngOnInit(): void {
-        console.log(this._id);
+        // console.log(this._id);
 
         // we have the conversation !!!
 
-        console.log("me: ",this.me);
-        console.log("userID :",this.userID);
+        // console.log("me: ",this.me);
+        // console.log("userID :",this.userID);
 
 
  
         this.api.getUserById(this.userID).toPromise().then((res:any)=>{
             
-            console.log(res);
+            // console.log(res);
             
 
 
@@ -169,60 +171,55 @@ export class ConversationComponent implements OnInit {
     } 
 
     fetchChatDetail(id: string) {
-        this.api.getMessagesByConversationID(id).toPromise().then((res:any)=>{
-            console.log(res);
 
-            this.messages = res. messages;
-            
-            this.cdr.detectChanges();
-
-
-            this.watchMessages();
-            
-            setTimeout(() => {
-                this.scrollToBottom();
-            }, 500);
-        })
+        if (id != 'NEW') {
+            this.api.getMessagesByConversationID(id).toPromise().then((res:any)=>{
+                // console.log(res);
+    
+                this.messages = res. messages;
+                
+                this.cdr.detectChanges();
+    
+    
+                this.watchMessages();
+                
+                setTimeout(() => {
+                    this.scrollToBottom();
+                }, 500);
+            })
+        } 
         
     }
 
     sendMessage() {
-        let msgID = new Date().getTime();
+        let msgID = new Date().getTime().toString();
 
         
         let text = this.message;
         
  
-        this.messages.push(
-            {
-                "id": msgID,
-                "content": this.message,
-                "senderId": "4d2689d8-6f72-4aa6-911d-2414c1a751af",
-                "receiverId": "3d1b20c8-86ec-43cd-a2cd-e52c13bb880d",
-                "conversationId": "9569f6f4-4a10-4fe3-bdf2-0917880582a6",
-                "uploads": this.fileData != null ? msgID : null,
-                "isRead": 0,
-                "createdAt": new Date().toISOString(),
-                "updatedAt": new Date().toISOString(),
-                "sender": {
-                    "id": this.me, 
+        if (text != '' || this.fileData!= null) {
+            this.messages.push(
+                {
+                    "id": msgID,
+                    "content": this.message,
+                    "senderId": "4d2689d8-6f72-4aa6-911d-2414c1a751af",
+                    "receiverId": "3d1b20c8-86ec-43cd-a2cd-e52c13bb880d",
+                    "conversationId": "9569f6f4-4a10-4fe3-bdf2-0917880582a6",
+                    "uploads": this.fileData != null ? 'uploading' : null,
+                    "isRead": 0,
+                    "createdAt": new Date().toISOString(),
+                    "updatedAt": new Date().toISOString(),
+                    "sender": {
+                        "id": this.me, 
+                    }
+                    
                 }
-                
-            }
-        );
+            );
+        }
 
 
-        
-
-       if (this.fileData != null) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            let image:any = document.getElementById('image-'+msgID);
-            
-            image.src=e.target.result
-        };
-        reader.readAsDataURL(this.fileData);
-       }
+ 
 
 
             
@@ -232,23 +229,39 @@ export class ConversationComponent implements OnInit {
 
         if (this.fileData != null) {
             this.api.sendMessage(this.userID,text,this.fileData).toPromise().then((res:any)=>{
-                console.log(res);
+                // console.log(res);
+                if (this.fileData != null) {
+                    console.log("fetching..."); 
+                    this.fileData = null;
+                   this.fetchChatDetail(this._id)
+               }
+
                 this.messageEvent.emit('REFRESH');
+
+               
             })
     
         }else{
-            this.api.sendMessage(this.userID,text).toPromise().then((res:any)=>{
-                console.log(res);
-                this.messageEvent.emit('REFRESH');
-                
-                
-            })
+            if (text != '') {
+                this.api.sendMessage(this.userID,text).toPromise().then((res:any)=>{
+                    // console.log(res);
+                    if (this.fileData != null) {
+                        console.log("fetching..."); 
+                        this.fileData = null;
+                       this.fetchChatDetail(this._id)
+                   }
+    
+                    this.messageEvent.emit('REFRESH');
+                    
+                    
+                })
+            }
     
         }
 
 
 
-        this.fileData = null;
+        
 
         
 
@@ -277,7 +290,7 @@ export class ConversationComponent implements OnInit {
 
         document.execCommand('insertText', false, '');
 
-        console.log("emoji");
+        // console.log("emoji");
         
     }
 
@@ -298,6 +311,8 @@ export class ConversationComponent implements OnInit {
 
 
   checkURLifISimage(url){
+    // console.log("file upload URL",url);
+    
     const fileNameParts = url.split('.');
     const fileExtension = fileNameParts[fileNameParts.length - 1].toLowerCase();
     const acceptedExtensions = ['jpg', 'jpeg', 'png', 'gif']; // Add more if needed

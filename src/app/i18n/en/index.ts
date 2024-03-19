@@ -76,6 +76,12 @@ export const en_US = {
     'DELETEMESSAGE':'Are you sure you want to delete this item ?',
     'WAITALERT':'Confirmation',
     'CONFIRM':'Confirm',
+    'NEWCHAT':'New conversation',
+    'CONNECTION_STATUS':'Active',
+    'CONNECTION_STATUS_NOW':'Active now',
+    'SELECTED_FILE':'One selected file',
+    'UPLOADING':'Uploading...',
+    
     ...nav,
     
 };
